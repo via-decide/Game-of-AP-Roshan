@@ -17,9 +17,11 @@ import { Door } from './components/Door';
 import { Outro } from './components/Outro';
 import { Inventory } from './components/Inventory';
 import { DialogueBox } from './components/DialogueBox';
+import { SoundManager } from './components/SoundManager';
 
 export default function App() {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
+  const [isAudioUnlocked, setIsAudioUnlocked] = useState(false);
 
   const changeView = (view: View) => {
     setState(prev => ({ ...prev, view }));
@@ -41,7 +43,7 @@ export default function App() {
 
   const renderView = () => {
     switch (state.view) {
-      case 'intro': return <div key="intro" className="w-full h-full"><Intro changeView={changeView} /></div>;
+      case 'intro': return <div key="intro" className="w-full h-full"><Intro changeView={changeView} onUnlock={() => setIsAudioUnlocked(true)} isAudioUnlocked={isAudioUnlocked} /></div>;
       case 'room': return <div key="room" className="w-full h-full"><Room state={state} changeView={changeView} addMessage={addMessage} /></div>;
       case 'desk': return <div key="desk" className="w-full h-full"><Desk state={state} changeView={changeView} addMessage={addMessage} /></div>;
       case 'typewriter': return <div key="typewriter" className="w-full h-full"><Typewriter state={state} changeView={changeView} addMessage={addMessage} updateFlag={updateFlag} addItem={addItem} /></div>;
@@ -59,6 +61,12 @@ export default function App() {
       <div className="noise-overlay" />
       <div className="vignette" />
       <div className="scanline" />
+
+      <SoundManager 
+        view={state.view} 
+        isUnlocked={isAudioUnlocked} 
+        onUnlock={() => setIsAudioUnlocked(true)} 
+      />
 
       {state.view !== 'intro' && state.view !== 'outro' && (
         <>
