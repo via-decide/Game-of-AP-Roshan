@@ -39,38 +39,42 @@ export function Typewriter({ state, changeView, addMessage, updateFlag, addItem 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full h-full flex flex-col items-center justify-center relative"
+      className="absolute inset-0 overflow-y-auto"
     >
-      <button 
-        onClick={() => changeView('desk')}
-        className="absolute top-8 left-8 text-white/50 hover:text-white uppercase tracking-widest text-sm cursor-pointer"
-      >
-        ← Back to Desk
-      </button>
-
-      <h2 className="font-serif text-4xl mb-8 opacity-80">The Typewriter</h2>
-      
-      <p className="mb-8 text-white/60 max-w-md text-center font-serif">
-        An old mechanical typewriter. The paper is blank. It seems to be waiting for a specific word.
-      </p>
-
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <input 
-          type="text" 
-          value={input}
-          onChange={handleType}
-          disabled={state.flags.typewriterSolved}
-          className="bg-transparent border-b border-white/30 text-center text-2xl font-mono text-white/80 focus:outline-none focus:border-white/80 transition-colors w-64 mb-8 uppercase tracking-widest"
-          placeholder="TYPE..."
-        />
+      <div className="min-h-full flex flex-col items-center p-6 pb-48 pt-24">
         <button 
-          type="submit"
-          disabled={state.flags.typewriterSolved || input.length === 0}
-          className="border border-white/30 px-8 py-3 uppercase tracking-widest hover:bg-white/10 transition-colors disabled:opacity-30 cursor-pointer"
+          onClick={() => changeView('desk')}
+          className="absolute top-8 left-8 text-white/50 hover:text-white uppercase tracking-widest text-sm cursor-pointer z-20"
         >
-          Strike Keys
+          ← Back to Desk
         </button>
-      </form>
+
+        <div className="m-auto w-full max-w-2xl relative z-10 flex flex-col items-center">
+          <h2 className="font-serif text-4xl mb-8 opacity-80 text-center">The Typewriter</h2>
+          
+          <p className="mb-8 text-white/60 max-w-md text-center font-serif">
+            An old mechanical typewriter. The paper is blank. It seems to be waiting for a specific word.
+          </p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col items-center">
+            <input 
+              type="text" 
+              value={input}
+              onChange={handleType}
+              disabled={state.flags.typewriterSolved}
+              className="bg-transparent border-b border-white/30 text-center text-xl md:text-2xl font-mono text-white/80 focus:outline-none focus:border-white/80 transition-colors w-48 md:w-64 mb-8 uppercase tracking-widest"
+              placeholder="TYPE..."
+            />
+            <button 
+              type="submit"
+              disabled={state.flags.typewriterSolved || input.length === 0}
+              className="border border-white/30 px-8 py-3 uppercase tracking-widest hover:bg-white/10 transition-colors disabled:opacity-30 cursor-pointer"
+            >
+              Strike Keys
+            </button>
+          </form>
+        </div>
+      </div>
     </motion.div>
   );
 }

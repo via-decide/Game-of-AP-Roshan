@@ -9,7 +9,7 @@ interface BookshelfProps {
   addItem: (item: Item) => void;
 }
 
-export function Bookshelf({ state, changeView, addMessage, updateFlag }: BookshelfProps) {
+export function Bookshelf({ state, changeView, addMessage, updateFlag, addItem }: BookshelfProps) {
   const handleExamine = () => {
     if (!state.flags.readBook) {
       addMessage("You pull out a dusty journal. The last entry reads: 'I must F... them. I must F... myself. That is the only way out.'");
@@ -24,23 +24,27 @@ export function Bookshelf({ state, changeView, addMessage, updateFlag }: Bookshe
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full h-full flex flex-col items-center justify-center relative"
+      className="absolute inset-0 overflow-y-auto"
     >
-      <button 
-        onClick={() => changeView('room')}
-        className="absolute top-8 left-8 text-white/50 hover:text-white uppercase tracking-widest text-sm cursor-pointer"
-      >
-        ← Back to Room
-      </button>
-
-      <h2 className="font-serif text-4xl mb-8 opacity-80">The Bookshelf</h2>
-      
-      <div className="grid grid-cols-1 gap-4">
-         <div 
-          onClick={handleExamine}
-          className="w-64 h-16 border border-white/20 flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors backdrop-blur-sm"
+      <div className="min-h-full flex flex-col items-center p-6 pb-48 pt-24">
+        <button 
+          onClick={() => changeView('room')}
+          className="absolute top-8 left-8 text-white/50 hover:text-white uppercase tracking-widest text-sm cursor-pointer z-20"
         >
-          <span className="font-serif uppercase tracking-widest opacity-70">Examine Books</span>
+          ← Back to Room
+        </button>
+
+        <div className="m-auto w-full max-w-2xl relative z-10 flex flex-col items-center">
+          <h2 className="font-serif text-4xl mb-8 opacity-80 text-center">The Bookshelf</h2>
+          
+          <div className="grid grid-cols-1 gap-4 w-full max-w-xs">
+             <div 
+              onClick={handleExamine}
+              className="w-full h-20 sm:h-16 border border-white/20 flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors backdrop-blur-sm"
+            >
+              <span className="font-serif uppercase tracking-widest opacity-70 text-center px-4">Examine Books</span>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
