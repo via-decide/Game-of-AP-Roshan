@@ -25,7 +25,7 @@ We would love to hear your thoughts! Since this idea started on social media, we
 - **Feedback:** What did you feel while playing?
 - **Ideas:** What should the writer find next in the shadows?
 
-**[Play the Prototype](https://ais-pre-6zxwpjnvvdsvhlsxyol3tf-221122829008.asia-southeast1.run.app)**
+**[Play the Prototype](https://game-of-ap-roshan-ql5zdkv6v-via-decides-projects.vercel.app/)**
 
 ---
 *Built with React, Tailwind CSS, and Framer Motion.*
