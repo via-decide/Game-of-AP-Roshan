@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { GameState, INITIAL_STATE, View, Item } from './types';
 import { Intro } from './components/Intro';
@@ -20,8 +20,38 @@ import { DialogueBox } from './components/DialogueBox';
 import { SoundManager } from './components/SoundManager';
 
 export default function App() {
-  const [state, setState] = useState<GameState>(INITIAL_STATE);
+  const [state, setState] = useState<GameState>(() => {
+    const saved = localStorage.getItem('writers_room_save');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Basic validation: ensure it has the required keys
+        if (parsed.view && parsed.inventory && parsed.flags) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error('Failed to parse saved game state', e);
+      }
+    }
+    return INITIAL_STATE;
+  });
   const [isAudioUnlocked, setIsAudioUnlocked] = useState(false);
+
+  useEffect(() => {
+    // Save state to localStorage whenever it changes
+    if (state.view === 'outro') {
+      localStorage.removeItem('writers_room_save');
+    } else {
+      localStorage.setItem('writers_room_save', JSON.stringify(state));
+    }
+  }, [state]);
+
+  const resetGame = () => {
+    if (window.confirm('Are you sure you want to reset your progress?')) {
+      localStorage.removeItem('writers_room_save');
+      setState(INITIAL_STATE);
+    }
+  };
 
   const changeView = (view: View) => {
     setState(prev => ({ ...prev, view }));
@@ -72,6 +102,12 @@ export default function App() {
         <>
           <Inventory items={state.inventory} />
           <DialogueBox messages={state.messages} />
+          <button 
+            onClick={resetGame}
+            className="fixed bottom-4 right-4 z-[100] text-[8px] uppercase tracking-widest text-white/30 hover:text-white/70 transition-colors"
+          >
+            Reset Progress
+          </button>
         </>
       )}
 
